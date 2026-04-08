@@ -126,6 +126,14 @@ class DungeonGame:
         self.enemies = pygame.sprite.Group()
         self.walls = pygame.sprite.Group()
 
+        # Load background image
+        try:
+            self.background = pygame.image.load("assets/images/background.jpeg").convert()
+            self.background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_HEIGHT))
+        except Exception as e:
+            print(f"Warning: Background image not found. Using default color.")
+            self.background = None
+
         # Konfigurasi Level
         self.current_level_index = 0
         # --- DAFTAR LEVEL (MAP) ---
@@ -383,7 +391,10 @@ class DungeonGame:
             self.screen.blit(hint, (SCREEN_WIDTH // 2 - 130, SCREEN_HEIGHT // 2 + 20))
 
         else:
-            self.screen.fill((30, 30, 30))
+            if self.background:
+                self.screen.blit(self.background, (0, 0))
+            else:
+                self.screen.fill((30, 30, 30))
             self.all_sprites.draw(self.screen)
             
             # UI Overlay
